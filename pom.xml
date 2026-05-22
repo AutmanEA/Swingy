@@ -8,11 +8,25 @@
 	<properties>
 		<maven.compiler.source>25</maven.compiler.source>
 		<maven.compiler.target>25</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<build>
-		<defaultGoal>package</defaultGoal>
-		<directory>${basedir}/bin</directory>
-		<finalName>${artifactId}</finalName>
+		<defaultGoal>clean package</defaultGoal>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 </project>

@@ -1,6 +1,3 @@
-package src.main.java;
-// Java program using label (swing)
-// to display the message “GFG WEB Site Click”
 import javax.swing.*;
 
 class Main {
