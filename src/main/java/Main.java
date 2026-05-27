@@ -1,29 +1,24 @@
-import javax.swing.*;
-
 class Main {
+	public static void main(String[] args) {
+		String view_mode = "console";
 
-	// Main driver method
-	public static void main(String[] args)
-	{
-		// Creating instance of JFrame
-		JFrame frame = new JFrame();
+		if (args.length > 1) {
+			System.err.println("ERROR: too much arguments");
+			return ;
+		} else if (args.length == 0) {
+			System.out.println("WARNING: default mode \"console\" set");
+		} else {
+			switch (args[0]) {
+				case "console"	-> view_mode = "console";
+				case "gui"		-> view_mode = "gui";
+				default			-> {
+					System.err.println("ERROR: unknown view mode selected");
+					return ;
+				}
+			}
+			System.out.println("\"" + view_mode + "\" MODE SELECTED");
+		}
 
-		// Creating instance of JButton
-		JButton button = new JButton(" GFG WebSite Click");
-
-		// x axis, y axis, width, height
-		button.setBounds(150, 200, 220, 50);
-
-		// adding button in JFrame
-		frame.add(button);
-
-		// 400 width and 500 height
-		frame.setSize(500, 600);
-
-		// using no layout managers
-		frame.setLayout(null);
-
-		// making the frame visible
-		frame.setVisible(true);
+		// SwingyController controller = new SwingyController(view_mode);
 	}
 }
