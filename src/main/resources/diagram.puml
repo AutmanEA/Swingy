@@ -1,0 +1,15 @@
+@startuml swingy
+
+class SwingyView {
+
+}
+
+class SwingyController {
+
+}
+
+class SwingyModel {
+
+}
+
+@enduml
