@@ -1,0 +1,38 @@
+@startuml swingy
+skinparam ClassAttributeIconSize 0
+skinparam DefaultFontSize 16
+
+interface SwingyView {
+	+getPlayerInput(): PlayerInput
+	+displayMessage(message: String): void
+}
+
+enum PlayerInput {
+	game_action
+	menu_action
+}
+
+enum ViewOutput {
+	menu_feedback
+	menu_ask
+	game_feedback
+	game_ask
+}
+
+class ConsoleView {
+	+getPlayerInput(): PlayerInput
+	+displayMessage(message: String): void
+}
+
+class GuiView {
+	+getPlayerInput(): PlayerInput
+	+displayMessage(message: String): void
+}
+
+PlayerInput <- SwingyView
+SwingyView -> ViewOutput
+
+SwingyView <|.. ConsoleView
+SwingyView <|.. GuiView
+
+@enduml

@@ -1,0 +1,9 @@
+@startuml swingy
+skinparam ClassAttributeIconSize 0
+skinparam DefaultFontSize 16
+
+class SwingyController {
+
+}
+
+@enduml

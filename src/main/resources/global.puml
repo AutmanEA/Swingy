@@ -1,0 +1,23 @@
+@startuml swingy
+skinparam ClassAttributeIconSize 0
+skinparam DefaultFontSize 16
+
+class SwingyController {
+
+}
+
+class SwingyModel {
+	-game: Game
+	+getGame(): Game
+	+createGame(hero_name: String, class_name: String): void
+	+loadGame(id: int): void
+	+saveGame(): void
+	+getGameList(): void
+}
+
+interface SwingyView {
+	+getPlayerInput(): PlayerInput
+	+displayMessage(message: String): void
+}
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml swingy
+skinparam ClassAttributeIconSize 0
+skinparam DefaultFontSize 16
+
+class SwingyModel {
+	-game: Game
+	+getGame(): Game
+	+createGame(hero_name: String, class_name: String): void
+	+loadGame(id: int): void
+	+saveGame(): void
+	+getGameList(): void
+}
+
+class Game {
+	-id: int
+	-hero: Hero
+	-map: Map
+	+Game(hero: Hero)
+	+move(direction: String): void
+	+battle(): void
+}
+
+SwingyModel <-- Game
+
+@enduml
