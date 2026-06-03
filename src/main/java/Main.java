@@ -1,3 +1,5 @@
+import controller.SwingyController;
+
 class Main {
 	public static void main(String[] args) {
 		String view_mode = "console";
@@ -18,7 +20,11 @@ class Main {
 			}
 			System.out.println("\"" + view_mode + "\" MODE SELECTED");
 		}
-
-		// SwingyController controller = new SwingyController(view_mode);
+		try {
+			SwingyController controller = new SwingyController(view_mode);
+			controller.exec();
+		} catch (Exception e) {
+			System.err.println("ERR: " + e);
+		}
 	}
 }

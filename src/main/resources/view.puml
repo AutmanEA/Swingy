@@ -7,16 +7,17 @@ interface SwingyView {
 	+displayMessage(message: String): void
 }
 
-enum PlayerInput {
-	game_action
-	menu_action
-}
+' enum PlayerInput {
+' 	game_action
+' 	menu_action
+' }
 
-enum ViewOutput {
+enum OutputFormatter {
 	menu_feedback
 	menu_ask
 	game_feedback
 	game_ask
+	+getFormattedDisplay(unformattedMessage: String): String
 }
 
 class ConsoleView {
@@ -29,8 +30,8 @@ class GuiView {
 	+displayMessage(message: String): void
 }
 
-PlayerInput <- SwingyView
-SwingyView -> ViewOutput
+' PlayerInput <- SwingyView
+SwingyView -> OutputFormatter
 
 SwingyView <|.. ConsoleView
 SwingyView <|.. GuiView

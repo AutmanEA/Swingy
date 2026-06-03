@@ -1,5 +1,5 @@
 package view;
 
-public class SwingyView {
-	
+public interface SwingyView {
+	public void displayMessage(String message);
 }
