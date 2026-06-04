@@ -8,8 +8,7 @@ import view.GuiView;
 import view.SwingyView;
 
 public class SwingyController {
-	SwingyView view;
-
+	private SwingyView view;
 	private ArrayList<String> command = new ArrayList<>();
 
 	public SwingyController(String mode) throws Exception { //TODO: better exception
@@ -18,19 +17,6 @@ public class SwingyController {
 			case "gui"		-> view = new GuiView();
 			default			-> throw new Exception(); //TODO: better exception
 		}
-	}
-
-	private void setCommand(String commandLine) {
-		command.clear();
-		Scanner scanner = new Scanner(commandLine);
-
-		if (!scanner.hasNext()) {
-			command.add("");
-		}
-		while (scanner.hasNext()) {
-			command.add(scanner.next());
-		}
-		scanner.close();
 	}
 
 	private void move() {
@@ -55,6 +41,26 @@ public class SwingyController {
 		}
 	}
 
+	private void newHero() {
+		//TODO: creer et remplir le heroData du model, save le nouveau hero dans la BDD (pas encore dispo)
+		//TODO: pour ça, je dois faire des va et vien avec la view pour demander a chaque fois chaque info du hero
+		//TODO: tout enregistrer dans le model avec un heroBuilder je suppose
+		//TODO: puis confirmer la reussite a la view
+	}
+
+	private void setCommand(String commandLine) {
+		command.clear();
+		Scanner scanner = new Scanner(commandLine);
+
+		if (!scanner.hasNext()) {
+			command.add("");
+		}
+		while (scanner.hasNext()) {
+			command.add(scanner.next());
+		}
+		scanner.close();
+	}
+
 	public void exec() throws Exception {
 		Scanner scanner = new Scanner(System.in);
 
@@ -75,11 +81,11 @@ public class SwingyController {
 					return;
 				}
 				case ""				-> view.displayMessage("Enter a command -> \"help\" to get command list");
+				case "new"			-> newHero();
 				case "move"			-> move();
 				default				-> view.displayMessage("UNKNOWN COMMAND: " + command.get(0) + " (command \"help\" to get command list)");
 			}
 		}
-
 		scanner.close();
 	}
 }
