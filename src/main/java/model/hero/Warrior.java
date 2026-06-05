@@ -1,4 +1,4 @@
-package model;
+package model.hero;
 
 public class Warrior extends HeroClass {
 	Warrior() {

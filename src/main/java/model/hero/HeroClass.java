@@ -1,4 +1,4 @@
-package model;
+package model.hero;
 
 public abstract class HeroClass {
 	protected String heroClassName = "";

@@ -1,31 +1,58 @@
-package model;
+package model.hero;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Hero {
 	private String name;
 	private HeroClass heroClass;
-	private int level = 0;
+	private int level = 1;
 	private int exp = 0;
 	private int current_hitpoints;
 	private HashMap<String, Artifact> equipment = new HashMap<String, Artifact>();
 
-	public void setName(String p_name) {
-		name = p_name;
-	}
 	public String getName() {
 		return name;
 	}
+	public int getLevel() {
+		return level;
+	}
+	public int getAttack() {
+		return heroClass.getAttack() + equipment.get("weapon").getBonus();
+	}
+	public int getDefense() {
+		return heroClass.getDefense() + equipment.get("armor").getBonus();
+	}
+	public int getHitpoints() {
+		return current_hitpoints;
+	}
+	public void doDamage(int damage) {
+		current_hitpoints -= damage;
+	}
+	public void addExperience(int p_exp) {
+		exp += p_exp;
+		updateLevel(exp);
+	}
 
-	public void setHeroClass(String p_heroClassName) {
+	private void updateLevel(int p_exp) {
+		if (p_exp > ((level * 1000) + (Math.pow((level - 1), 2) * 450))) {
+			level++;
+		}
+		//TODO: Notify ?
+	}
+
+	public Hero(String p_name, String p_heroClassName, int p_exp) {
+		name = p_name;
+
 		switch (p_heroClassName.toLowerCase()) {
 			case "thief"	-> heroClass = new Thief();
 			case "magus"	-> heroClass = new Magus();
 			case "warrior"	-> heroClass = new Warrior();
 			case "tank"		-> heroClass = new Tank();
-			default			-> System.err.println("TODO> exception"); //TODO: EXCEPTION
+			default			-> System.err.println("TODO> exception");
 		}
+
+		current_hitpoints = heroClass.getHitpoints() + equipment.get("helmet").getBonus();
+		addExperience(p_exp);
 	}
 
 	public void equip(Artifact artifact) {

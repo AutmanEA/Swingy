@@ -5,11 +5,29 @@
 	<version>0.1</version>
 	<packaging>jar</packaging>
 
-	<properties>
-		<maven.compiler.source>25</maven.compiler.source>
-		<maven.compiler.target>25</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<profiles>
+			<profile>
+				<id>java-21</id>
+				<activation>
+					<jdk>21</jdk>
+				</activation>
+				<properties>
+					<maven.compiler.source>21</maven.compiler.source>
+					<maven.compiler.target>21</maven.compiler.target>
+				</properties>
+			</profile>
+
+			<profile>
+				<id>java-25</id>
+				<activation>
+					<jdk>25</jdk>
+				</activation>
+				<properties>
+					<maven.compiler.source>25</maven.compiler.source>
+					<maven.compiler.target>25</maven.compiler.target>
+				</properties>
+			</profile>
+		</profiles>
 
 	<build>
 		<defaultGoal>clean package</defaultGoal>

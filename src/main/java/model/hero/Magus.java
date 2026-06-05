@@ -1,4 +1,4 @@
-package model;
+package model.hero;
 
 public class Magus extends HeroClass {
 	Magus() {

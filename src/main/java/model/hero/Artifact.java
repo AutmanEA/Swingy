@@ -1,8 +1,8 @@
-package model;
+package model.hero;
 
 public class Artifact {
-	protected String type = "";
-	protected int bonus = 0;
+	private String type = "";
+	private int bonus = 0;
 
 	//TODO: add name ? not mandatory and needs a name randomizer, flemme?
 

@@ -1,4 +1,4 @@
-package model;
+package model.hero;
 
 public class Thief extends HeroClass {
 	Thief() {
