@@ -29,8 +29,11 @@ public class GameMap {
 		}
 	}
 
-	public long distanceFromCenter(Coordinates target) {
-		return Math.round(Math.sqrt(Math.pow(center.getX() - target.getX(), 2) + Math.pow(center.getY() - target.getY(), 2)));
+	public int distanceFromCenter(Coordinates target) {
+		if (target == null) {
+			//TODO:exception
+		}
+		return (int)Math.round(Math.sqrt(Math.pow(center.getX() - target.getX(), 2) + Math.pow(center.getY() - target.getY(), 2)));
 	}
 
 	public void moveHeroBy(int x, int y) {
@@ -59,6 +62,10 @@ public class GameMap {
 
 	public void cancelMove() {
 		hero_current_position.set(hero_previous_position);
+	}
+
+	public Coordinates getHeroCurrentPosition() {
+		return hero_current_position;
 	}
 
 }

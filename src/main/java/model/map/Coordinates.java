@@ -12,12 +12,12 @@ public class Coordinates {
 		return y;
 	}
 
-	public Coordinates(int _x, int _y) {
+	Coordinates(int _x, int _y) {
 		x = _x;
 		y = _y;
 	}
 
-	public Coordinates(Coordinates _toCopy) {
+	Coordinates(Coordinates _toCopy) {
 		x = _toCopy.x;
 		y = _toCopy.y;
 	}

@@ -55,8 +55,9 @@ public class Hero {
 		addExperience(p_exp);
 	}
 
-	public void equip(Artifact artifact) {
+	public void equip(String artifactType, int bonus) {
 
+		Artifact artifact = new Artifact(artifactType, bonus);
 		equipment.put(artifact.getType().toLowerCase(), artifact);
 
 
