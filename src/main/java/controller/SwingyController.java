@@ -2,11 +2,12 @@ package controller;
 
 import java.util.Scanner;
 
+import model.SwingyModel;
 import view.SwingyView;
 
 public class SwingyController {
 	private SwingyView view;
-	private boolean isGameRunning = false;
+	private SwingyModel model = new SwingyModel();
 
 	public SwingyController(String mode) throws Exception { //TODO: better exception
 		switch (mode) {
@@ -61,6 +62,15 @@ public class SwingyController {
 		}
 	}
 
+	private void execCommand(Command command) {
+		if (model.getGame() != null) {
+			view.processGameCommand(command);
+		} else {
+			view.processMenuCommand(command);
+		}
+		model.processCommand(command);
+	}
+
 	public void exec() throws Exception {
 		Scanner scanner = new Scanner(System.in); //TODO: attention je vais sans doute pas que ecouter ca
 
@@ -72,14 +82,7 @@ public class SwingyController {
 				return;
 			}
 			Command command = setCommand(datas);
-
-			if (isGameRunning) {
-				view.processGameCommand(command);
-			} else {
-				view.processMenuCommand(command);
-			}
-
-			isGameRunning = true; //TODO: a voir pour lancer le jeu suite a un feedback ?
+			execCommand(command);
 		}
 		scanner.close();
 	}

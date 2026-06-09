@@ -88,7 +88,7 @@ public class Hero {
 			case "magus"	-> heroClass = new Magus();
 			case "warrior"	-> heroClass = new Warrior();
 			case "tank"		-> heroClass = new Tank();
-			default			-> System.err.println("TODO> exception");
+			default			-> heroClass = new RandomDude();
 		}
 
 		current_hitpoints = heroClass.getHitpoints();

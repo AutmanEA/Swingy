@@ -2,23 +2,23 @@ package controller;
 
 public class Command {
 	private PlayerAction action;
-	private String argument;
+	private Object payload;
 
-	public Command(PlayerAction _action, String _arg) {
+	public Command(PlayerAction _action, Object _payload) {
 		action = _action;
-		argument = _arg;
+		payload = _payload;
 	}
 
 	public Command(PlayerAction _action) {
 		action = _action;
-		argument = "";
+		payload = null;
 	}
 
 	public PlayerAction getAction() {
 		return action;
 	}
 
-	public String getArgument() {
-		return argument;
+	public Object getArgument() {
+		return payload;
 	}
 }

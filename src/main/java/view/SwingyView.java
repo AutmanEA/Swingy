@@ -45,8 +45,11 @@ public class SwingyView {
 
 			switch (action) {
 				case PlayerAction.MOVE:
-					String argument = command.getArgument();
-
+					String argument = "";
+					if (command.getArgument() instanceof String) {
+						argument = (String) command.getArgument();
+					}
+					System.err.println(argument);
 					if (argument.isEmpty()) {
 						display("Command failed, use move with one argument -> north (n), south (s), east (e) or west (w)");
 					} else {
