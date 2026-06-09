@@ -19,52 +19,62 @@ public class SwingyView {
 		}
 	}
 
-	public void processMenuCommand(Command command) {
+	public void processCommand(Command command, boolean isInGame) {
 		if (command != null) {
 			PlayerAction action = command.getAction();
 
 			switch (action) {
-				case PlayerAction.NEW_HERO:
-					display("Hero created");
+				case PlayerAction.HELP:
+					display("help :)"); //TODO
 					break;
 				case PlayerAction.EXIT:
-					display("Quitting... see you later.");
+					display("Quitting... see you later."); //TODO
 					break;
 				default:
-					display("This command can't be used in menu (command \"help\" to get command list)");
 					break;
+			}
+			if (isInGame) {
+				processGameCommand(command);
+			} else {
+				processMenuCommand(command);
 			}
 		} else {
 			display("UNKNOWN COMMAND: (command \"help\" to get command list)");
 		}
 	}
 
-	public void processGameCommand(Command command) {
-		if (command != null) {
-			PlayerAction action = command.getAction();
+	private void processMenuCommand(Command command) {
+		PlayerAction action = command.getAction();
 
-			switch (action) {
-				case PlayerAction.MOVE:
-					String argument = "";
-					if (command.getArgument() instanceof String) {
-						argument = (String) command.getArgument();
-					}
-					System.err.println(argument);
-					if (argument.isEmpty()) {
-						display("Command failed, use move with one argument -> north (n), south (s), east (e) or west (w)");
-					} else {
-						display("Hero moved " + argument);
-					}
-					break;
-				case PlayerAction.EXIT:
-					display("Quitting... see you later.");
-					break;
-				default:
-					display("This command can't be used in game (command \\\"help\\\" to get command list)");
-					break;
-			}
-		} else {
-			display("UNKNOWN COMMAND: (command \"help\" to get command list)");
+		switch (action) {
+			case PlayerAction.NEW_HERO:
+				display("Hero created");
+				break;
+			default:
+				display("This command can't be used in menu (command \"help\" to get command list)");
+				break;
+		}
+	}
+
+	private void processGameCommand(Command command) {
+		PlayerAction action = command.getAction();
+
+		switch (action) {
+			case PlayerAction.MOVE:
+				String argument = "";
+				if (command.getArgument() instanceof String) {
+					argument = (String) command.getArgument();
+				}
+				System.err.println(argument);
+				if (argument.isEmpty()) {
+					display("Command failed, use move with one argument -> north (n), south (s), east (e) or west (w)");
+				} else {
+					display("Hero moved " + argument);
+				}
+				break;
+			default:
+				display("This command can't be used in game (command \\\"help\\\" to get command list)");
+				break;
 		}
 	}
 

@@ -62,15 +62,6 @@ public class SwingyController {
 		}
 	}
 
-	private void execCommand(Command command) {
-		if (model.getGame() != null) {
-			view.processGameCommand(command);
-		} else {
-			view.processMenuCommand(command);
-		}
-		model.processCommand(command);
-	}
-
 	public void exec() throws Exception {
 		Scanner scanner = new Scanner(System.in); //TODO: attention je vais sans doute pas que ecouter ca
 
@@ -82,7 +73,9 @@ public class SwingyController {
 				return;
 			}
 			Command command = setCommand(datas);
-			execCommand(command);
+
+			view.processCommand(command, model.getGame() != null);
+			model.processCommand(command);
 		}
 		scanner.close();
 	}

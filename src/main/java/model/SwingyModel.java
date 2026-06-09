@@ -13,6 +13,9 @@ public class SwingyModel {
 	}
 
 	public void processCommand(Command command) {
+		if (command == null)
+			return;
+
 		if (game == null) {
 			switch (command.getAction()) {
 				case PlayerAction.NEW_HERO:
@@ -27,16 +30,17 @@ public class SwingyModel {
 		}
 	}
 
-	public void createGame(HeroData heroData) {
+	private void createGame(HeroData heroData) {
 		Hero hero = new Hero(heroData);
 
 		game = new Game(hero);
 	}
 
-	public HeroData loadHero(String name) {
-		//TODO: fetch from database > unique id = name ? c'est triste mais bon :)
+	private HeroData loadHero(String name) {
+		//TODO: fetch from database > unique id = name ? c'est triste mais bon :),
+
+		//TODO: et du coup si le name existe pas, on envoie FAILURE ou on cree un nouveau ?
+
 		return new HeroData(name, "thief", 2350, 0, 0, 0);
 	}
 }
-//TODO c'est lui qui va appeler les bonnes fonctions de la games aussi avec les commandes qu'on recoit
-//TODO il va faire tourner la game mais c'est lui qui va gerer la communication avec le controller et la DB
