@@ -22,6 +22,9 @@ public class Hero {
 	public int getDefense() {
 		return heroClass.getDefense() + equipment.get("armor").getBonus();
 	}
+	public int getMaxHitpoints() {
+		return heroClass.getHitpoints() + equipment.get("helmet").getBonus();
+	}
 	public int getHitpoints() {
 		return current_hitpoints;
 	}
@@ -34,16 +37,53 @@ public class Hero {
 	}
 
 	private void updateLevel(int p_exp) {
-		if (p_exp > ((level * 1000) + (Math.pow((level - 1), 2) * 450))) {
+		while (p_exp > ((level * 1000) + (Math.pow((level - 1), 2) * 450))) {
 			level++;
 		}
 		//TODO: Notify ?
 	}
 
-	public Hero(String p_name, String p_heroClassName, int p_exp) {
-		name = p_name;
+	public void equip(String artifactType, int bonus) {
+		Artifact newArtifact = new Artifact(artifactType, bonus);
+		String typeKey = artifactType.toLowerCase();
 
-		switch (p_heroClassName.toLowerCase()) {
+		equipment.put(typeKey, newArtifact);
+
+		if (typeKey.equals("helmet")) {
+			int oldBonus = equipment.get("helmet").getBonus();
+			int difference = bonus - oldBonus;
+
+			current_hitpoints += difference;
+
+
+			if (current_hitpoints > getMaxHitpoints()) {
+				current_hitpoints = getMaxHitpoints();
+			}
+			if (current_hitpoints <= 0) {
+				current_hitpoints = 1;
+			}
+		}
+	}
+
+	public HeroData toData() {
+		int helmetBonus = equipment.get("helmet").getBonus();
+		int armorBonus = equipment.get("armor").getBonus();
+		int weaponBonus = equipment.get("weapon").getBonus();
+
+		return new HeroData(
+			name,
+			heroClass.getHeroClassName(),
+			exp,
+			helmetBonus,
+			armorBonus,
+			weaponBonus
+		);
+	}
+
+	public Hero(HeroData heroData) {
+		name = heroData.heroName();
+
+		switch (heroData.heroClass().toLowerCase()) {
 			case "thief"	-> heroClass = new Thief();
 			case "magus"	-> heroClass = new Magus();
 			case "warrior"	-> heroClass = new Warrior();
@@ -51,24 +91,10 @@ public class Hero {
 			default			-> System.err.println("TODO> exception");
 		}
 
-		current_hitpoints = heroClass.getHitpoints() + equipment.get("helmet").getBonus();
-		addExperience(p_exp);
-	}
-
-	public void equip(String artifactType, int bonus) {
-
-		Artifact artifact = new Artifact(artifactType, bonus);
-		equipment.put(artifact.getType().toLowerCase(), artifact);
-
-
-		// String artifactType = artifact.getType().toLowerCase();
-		// String[] types = new String[] {"helmet", "weapon", "armor"}; //TODO: attention probleme de conception, c'est le controller qui va check si l'objet peut etre equipe ou pas
-
-
-		// if (Arrays.asList(types).contains(artifactType)) {
-		// } else {
-			// //TODO: throw an exception ?
-			// System.err.println("equipement inconnu");
-		// }
+		current_hitpoints = heroClass.getHitpoints();
+		addExperience(heroData.exp());
+		equip("helmet", heroData.helmetBonus());
+		equip("armor", heroData.armorBonus());
+		equip("weapon", heroData.weaponBonus());
 	}
 }

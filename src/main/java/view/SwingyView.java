@@ -31,7 +31,7 @@ public class SwingyView {
 					display("Quitting... see you later.");
 					break;
 				default:
-					display("This command can't be used in menu (command \\\"help\\\" to get command list)");
+					display("This command can't be used in menu (command \"help\" to get command list)");
 					break;
 			}
 		} else {
