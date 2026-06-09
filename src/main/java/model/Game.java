@@ -24,6 +24,7 @@ public class Game {
 		}
 		if (map.hasWon()) {
 			//TODO: notifier que le joueur a gagné
+			//TODO: sauvegarder le hero a la fin de la win
 		} else if (map.hasEncounters()) {
 			//TODO: notifier que y a une rencontre
 		} else {
