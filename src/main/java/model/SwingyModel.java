@@ -16,6 +16,14 @@ public class SwingyModel {
 		if (command == null)
 			return;
 
+		switch (command.getAction()) {
+			case PlayerAction.EXIT:
+				//TODO: a la fin d'une game won > save le hero.
+				break;
+			default:
+				break;
+		}
+
 		if (game == null) {
 			switch (command.getAction()) {
 				case PlayerAction.NEW_HERO:
