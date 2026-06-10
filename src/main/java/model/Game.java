@@ -15,7 +15,7 @@ public class Game {
 		map = new GameMap(heroLevel);
 	}
 
-	public void move(String direction) {
+	public MoveResult move(String direction) {
 		switch (direction) {
 			case "n"	-> map.moveHeroBy(0, -1);
 			case "s"	-> map.moveHeroBy(0, 1);
@@ -23,23 +23,20 @@ public class Game {
 			case "w"	-> map.moveHeroBy(-1, 0);
 		}
 		if (map.hasWon()) {
-			//TODO: notifier que le joueur a gagné
-			//TODO: sauvegarder le hero a la fin de la win
+			return new MoveResult.Victory();
 		} else if (map.hasEncounters()) {
-			//TODO: notifier que y a une rencontre
+			return new MoveResult.Fight();
 		} else {
-			//TODO: notifier de continuer, rien de spécial
+			return new MoveResult.Nothing();
 		}
 	}
 
 	public void run() {
 		map.cancelMove();
-		//TODO: notify run succesfull
 	}
 
 	public void fight() {
 		battle(map.getHeroCurrentPosition());
-		//TODO: notify fin de fight
 	}
 
 	private void battle(Coordinates battlePosition) {

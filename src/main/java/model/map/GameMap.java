@@ -21,7 +21,7 @@ public class GameMap {
 		for(int y = 1; y < size - 1; y++) {
 			for (int x = 1; x < size - 1; x++) {
 				if (!(x == center.getX() && y == center.getY())) {
-					if (Math.random() < 0.15) {
+					if (Math.random() < 0.8) {
 						encounters.add(new Coordinates(x, y));
 					}
 				}
