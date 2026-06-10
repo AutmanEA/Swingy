@@ -17,13 +17,6 @@ public class SwingyController {
 		}
 	}
 
-	// private void newHero() {
-		//TODO: creer et remplir le heroData du model, save le nouveau hero dans la BDD (pas encore dispo)
-		//TODO: pour ça, je dois faire des va et vien avec la view pour demander a chaque fois chaque info du hero
-		//TODO: tout enregistrer dans le model avec un heroBuilder je suppose
-		//TODO: puis confirmer la reussite a la view
-	// }
-
 	private Command setCommand(String datas[]) {
 		if (datas.length > 2) {
 			return null;
@@ -64,6 +57,7 @@ public class SwingyController {
 
 	public void exec() throws Exception {
 		Scanner scanner = new Scanner(System.in); //TODO: attention je vais sans doute pas que ecouter ca
+		Feedback feedback;
 
 		while (scanner.hasNextLine()) {
 			String datas[] = scanner.nextLine().toLowerCase().trim().split("\\s+");
@@ -72,10 +66,17 @@ public class SwingyController {
 				scanner.close();
 				return;
 			}
+
+			//TODO: changer le systeme, il faut que je verifie si la commande est bonne ici avant de l'envoyer a la vue ou au modele
+			//TODO: je veux pas parser 3 fois, si je parse ici, dans le modele je fais confiance que je recois le bon payload au bon moment
+			//TODO: il me faut donc
+				//TODO: --> dans la vue une methode qui affiche un message d'erreur et un comportement si c'est OK
+				//TODO: rien de spécial dans le modele, juste je peux check ici si le payload est good
 			Command command = setCommand(datas);
 
 			view.processCommand(command, model.getGame() != null);
-			model.processCommand(command);
+			if (command != null)
+				feedback = model.processCommand(command);
 		}
 		scanner.close();
 	}

@@ -21,7 +21,7 @@ public class SwingyView {
 
 	public void processCommand(Command command, boolean isInGame) {
 		if (command != null) {
-			PlayerAction action = command.getAction();
+			PlayerAction action = command.action();
 
 			switch (action) {
 				case PlayerAction.HELP:
@@ -44,7 +44,7 @@ public class SwingyView {
 	}
 
 	private void processMenuCommand(Command command) {
-		PlayerAction action = command.getAction();
+		PlayerAction action = command.action();
 
 		switch (action) {
 			case PlayerAction.NEW_HERO:
@@ -57,15 +57,15 @@ public class SwingyView {
 	}
 
 	private void processGameCommand(Command command) {
-		PlayerAction action = command.getAction();
+		PlayerAction action = command.action();
 
 		switch (action) {
 			case PlayerAction.MOVE:
 				String argument = "";
-				if (command.getArgument() instanceof String) {
-					argument = (String) command.getArgument();
+
+				if (command.payload() instanceof String) {
+					argument = (String) command.payload();
 				}
-				System.err.println(argument);
 				if (argument.isEmpty()) {
 					display("Command failed, use move with one argument -> north (n), south (s), east (e) or west (w)");
 				} else {

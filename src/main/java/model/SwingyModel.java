@@ -1,7 +1,9 @@
 package model;
 
 import controller.Command;
+import controller.Feedback;
 import controller.PlayerAction;
+import controller.PlayerActionStatus;
 import model.hero.Hero;
 import model.hero.HeroData;
 
@@ -12,12 +14,12 @@ public class SwingyModel {
 		return game;
 	}
 
-	public void processCommand(Command command) {
+	public Feedback processCommand(Command command) {
 		if (command == null)
-			return;
+			return null;
 
 		if (game == null) {
-			switch (command.getAction()) {
+			switch (command.action()) {
 				case PlayerAction.NEW_HERO:
 					createGame(loadHero("joey"));
 					break;
@@ -26,17 +28,22 @@ public class SwingyModel {
 					break;
 			}
 		} else {
-			switch (command.getAction()) {
+			switch (command.action()) {
+				case PlayerAction.MOVE:
+					game.move((String) command.payload());
 				default:
 					break;
 			}
 		}
+		return new Feedback(PlayerActionStatus.FAILURE, "y a R frr"); //TODO: remove
 	}
 
-	private void createGame(HeroData heroData) {
+	private PlayerActionStatus createGame(HeroData heroData) {
 		Hero hero = new Hero(heroData);
 
 		game = new Game(hero);
+
+		return PlayerActionStatus.GAME_STARTED;
 	}
 
 	private HeroData loadHero(String name) {

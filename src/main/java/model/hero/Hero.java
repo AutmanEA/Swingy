@@ -17,13 +17,13 @@ public class Hero {
 		return level;
 	}
 	public int getAttack() {
-		return heroClass.getAttack() + equipment.get("weapon").getBonus();
+		return heroClass.getAttack() + equipment.get("weapon").bonus();
 	}
 	public int getDefense() {
-		return heroClass.getDefense() + equipment.get("armor").getBonus();
+		return heroClass.getDefense() + equipment.get("armor").bonus();
 	}
 	public int getMaxHitpoints() {
-		return heroClass.getHitpoints() + equipment.get("helmet").getBonus();
+		return heroClass.getHitpoints() + equipment.get("helmet").bonus();
 	}
 	public int getHitpoints() {
 		return current_hitpoints;
@@ -50,7 +50,7 @@ public class Hero {
 		equipment.put(typeKey, newArtifact);
 
 		if (typeKey.equals("helmet")) {
-			int oldBonus = equipment.get("helmet").getBonus();
+			int oldBonus = equipment.get("helmet").bonus();
 			int difference = bonus - oldBonus;
 
 			current_hitpoints += difference;
@@ -66,13 +66,13 @@ public class Hero {
 	}
 
 	public HeroData toData() {
-		int helmetBonus = equipment.get("helmet").getBonus();
-		int armorBonus = equipment.get("armor").getBonus();
-		int weaponBonus = equipment.get("weapon").getBonus();
+		int helmetBonus = equipment.get("helmet").bonus();
+		int armorBonus = equipment.get("armor").bonus();
+		int weaponBonus = equipment.get("weapon").bonus();
 
 		return new HeroData(
 			name,
-			heroClass.getHeroClassName(),
+			heroClass.name().toLowerCase(),
 			exp,
 			helmetBonus,
 			armorBonus,
@@ -84,11 +84,11 @@ public class Hero {
 		name = heroData.heroName();
 
 		switch (heroData.heroClass().toLowerCase()) {
-			case "thief"	-> heroClass = new Thief();
-			case "magus"	-> heroClass = new Magus();
-			case "warrior"	-> heroClass = new Warrior();
-			case "tank"		-> heroClass = new Tank();
-			default			-> heroClass = new RandomDude();
+			case "thief"	-> heroClass = HeroClass.THIEF;
+			case "magus"	-> heroClass = HeroClass.MAGUS;
+			case "warrior"	-> heroClass = HeroClass.WARRIOR;
+			case "tank"		-> heroClass = HeroClass.TANK;
+			default			-> heroClass = HeroClass.DEFAULT;
 		}
 
 		current_hitpoints = heroClass.getHitpoints();
