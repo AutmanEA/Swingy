@@ -15,7 +15,7 @@ public class Game {
 		map = new GameMap(heroLevel);
 	}
 
-	public MoveResult move(String direction) {
+	public GameEvent.onMove move(String direction) {
 		switch (direction) {
 			case "n"	-> map.moveHeroBy(0, -1);
 			case "s"	-> map.moveHeroBy(0, 1);
@@ -23,11 +23,11 @@ public class Game {
 			case "w"	-> map.moveHeroBy(-1, 0);
 		}
 		if (map.hasWon()) {
-			return new MoveResult.Victory();
+			return GameEvent.onMove.VICTORY;
 		} else if (map.hasEncounters()) {
-			return new MoveResult.Fight();
+			return GameEvent.onMove.FIGHT;
 		} else {
-			return new MoveResult.Nothing();
+			return GameEvent.onMove.NOTHING;
 		}
 	}
 

@@ -1,5 +1,7 @@
 package view;
 
+import controller.InputEvent;
+
 public class SwingyView {
 	private ConsoleView consoleView;
 	private GuiView guiView;
@@ -14,6 +16,15 @@ public class SwingyView {
 		} else if (mode.equals("console")) {
 			currentView = consoleView;
 		}
+	}
+
+	public void setListener(InputEvent listener) {
+		consoleView.setListener(listener);
+		guiView.setListener(listener);
+	}
+
+	public void startListen() {
+		currentView.startListen();
 	}
 
 	public void unknownCommand() {
@@ -42,5 +53,6 @@ public class SwingyView {
 		} else {
 			currentView = guiView;
 		}
+		currentView.startListen();
 	}
 }
