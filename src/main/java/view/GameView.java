@@ -9,6 +9,5 @@ public interface GameView {
 
 	public void unknownCommand(String command);
 	public void badArgument();
-	public void badCommandUsage();
 	public void handleMove(String direction);
 }

@@ -30,17 +30,12 @@ public class ConsoleView implements GameView {
 
 	@Override
 	public void unknownCommand(String command) {
-		displayMessage("UNKNOWN COMMAND: " + command + " (command \"help\" to get command list)");
+		displayMessage("UNKNOWN COMMAND IN THIS CONTEXT: " + command + " (command \"help\" to get command list)");
 	}
 
 	@Override
 	public void badArgument() {
 		displayMessage("BAD ARGUMENT: this command needs specific arguments (command \"help\" to get command list)");
-	}
-
-	@Override
-	public void badCommandUsage() {
-		displayMessage("BAD USAGE: this command can't be used now (command \"help\" to get command list)");
 	}
 
 	@Override

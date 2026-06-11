@@ -41,7 +41,6 @@ public class SwingyView {
 	public void display(String message) { currentView.displayMessage(message); }
 	public void unknownCommand(String command) { currentView.unknownCommand(command); }
 	public void badArgument() { currentView.badArgument(); }
-	public void badCommandUsage() { currentView.badCommandUsage(); }
 
 	//commands
 	public void move(String direction) { currentView.handleMove(direction); }
