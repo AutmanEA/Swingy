@@ -1,6 +1,7 @@
 package controller;
 
 import model.GameEvent;
+import model.GameState;
 import model.SwingyModel;
 import view.SwingyView;
 
@@ -19,33 +20,52 @@ public class SwingyController implements InputEvent {
 
 	@Override
 	public void onInput(String input) {
-		String command = getCommand(input);
-		String argument = getArgument(input);
+		String[] data = input.split("\\s+");
+
+		String command = getCommand(data);
+		String argument = getArgument(data);
 		if (command != null)
 			processCommand(command, argument);
 	}
 
 	public void exec() throws Exception {
-		model.createGame(model.loadHero("Joey")); //TODO:delete
+		model.createGame(model.loadHero("Joey")); //TODO: delete
 		view.startListen();
 	}
 
-	private String getCommand(String data) {
-		String[] split = data.split("\\s+");
-
-		return split[0];
+	private String getCommand(String[] data) {
+		return data[0];
 	}
 
-	private String getArgument(String data) {
-		String[] split = data.split("\\s+");
-
-		if (split.length == 2) {
-			return split[1];
+	private String getArgument(String[] data) {
+		if (data.length == 2) {
+			return data[1];
 		}
 		return null;
 	}
 
 	private void processCommand(String command, String argument) {
+		switch (command) {
+			case "help":
+				//TODO
+			case "exit", "quit":
+				//TODO
+		}
+
+		GameState state = model.getGameState();
+		switch (state) {
+			case GameState.EXPLORING	-> processExploringCommands(command, argument);
+			case GameState.IN_MENU		-> processMenuCommands(command, argument);
+			case GameState.FIGHTING		-> processFightingCommands(command, argument);
+			case GameState.LOOTING		-> processLootingCommands(command, argument);
+		}
+	}
+
+	private void processMenuCommands(String command, String argument) {
+		view.unknownCommand(command);
+	}
+
+	private void processExploringCommands(String command, String argument) {
 		switch (command) {
 			case "move":
 				if (argument != null)
@@ -65,6 +85,18 @@ public class SwingyController implements InputEvent {
 			default:
 				view.unknownCommand(command);
 		}
+	}
+
+	private void processFightingCommands(String command, String argument) {
+		switch (command) {
+			case "fight"	-> handleFight();
+			case "run"		-> handleRun();
+			default			-> view.unknownCommand(command);
+		}
+	}
+
+	private void processLootingCommands(String command, String argument) {
+		view.unknownCommand(command);
 	}
 
 	private void handleMove(String direction) {
@@ -92,17 +124,35 @@ public class SwingyController implements InputEvent {
 				return;
 		}
 		switch (result) {
-			case GameEvent.onMove.FIGHT:
-				view.display("fight detected");
-				//TODO:handleFight()
-				break;
-			case GameEvent.onMove.VICTORY:
-				view.display("victory :)");
-				//TODO:handleVictory()
-				break;
-			case GameEvent.onMove.NOTHING:
-				view.display("tout va bien continue frr");
-				break;
+			case GameEvent.onMove.ENCOUNTER	-> view.display("fight detected, please choose between fight or run");
+			case GameEvent.onMove.VICTORY	-> view.display("victory :)");
+			case GameEvent.onMove.NOTHING	-> view.display("bla bla bla");
+		}
+	}
+
+	private void handleFight() {
+		view.display("ok tu te bagar");
+		processFightResult(model.fight());
+	}
+
+	private void handleRun() {
+		view.display("tu tente de fuir et...");
+		processFightResult(model.run());
+	}
+
+	private void processFightResult(GameEvent.onFight fightResult) {
+		view.display("debut de la bagar");
+		switch (fightResult) {
+			case GameEvent.onFight.Loot(String artifactType, int artifactBonus, boolean levelUp) -> {
+				if (levelUp) view.display("t'as level up !");
+				view.display("tu loot ca : " + artifactType + " qui a cette puissance : " + artifactBonus + " tu veux quiper?");
+			}
+			case GameEvent.onFight.Victory(boolean levelUp) -> {
+				if (levelUp) view.display("t'as level up !");
+				view.display("bravo t'as gagne le fight");
+			}
+			case GameEvent.onFight.Lose() -> view.display("t'as perdu retour au menu");
+			case GameEvent.onFight.Run()  -> view.display("t'as reussi a run, continue a explorer");
 		}
 	}
 }

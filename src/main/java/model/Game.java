@@ -1,12 +1,19 @@
 package model;
 
+import model.hero.Artifact;
 import model.hero.Hero;
 import model.map.Coordinates;
 import model.map.GameMap;
 
 public class Game {
-	private Hero	hero;
-	private GameMap	map;
+	private Hero		hero;
+	private GameMap		map;
+	private GameState	state = GameState.EXPLORING;
+	private Artifact	pendingLoot = null;
+
+	public GameState getState() {
+		return state;
+	}
 
 	public Game(Hero p_hero) {
 		hero = p_hero;
@@ -16,6 +23,8 @@ public class Game {
 	}
 
 	public GameEvent.onMove move(String direction) {
+		clearLoot();
+
 		switch (direction) {
 			case "n"	-> map.moveHeroBy(0, -1);
 			case "s"	-> map.moveHeroBy(0, 1);
@@ -23,48 +32,71 @@ public class Game {
 			case "w"	-> map.moveHeroBy(-1, 0);
 		}
 		if (map.hasWon()) {
+			state = GameState.IN_MENU;
 			return GameEvent.onMove.VICTORY;
 		} else if (map.hasEncounters()) {
-			return GameEvent.onMove.FIGHT;
+			state = GameState.FIGHTING;
+			return GameEvent.onMove.ENCOUNTER;
 		} else {
+			state = GameState.EXPLORING;
 			return GameEvent.onMove.NOTHING;
 		}
 	}
 
-	public void run() {
-		map.cancelMove();
+	public GameEvent.onFight run() {
+		if (Math.random() < 0.5) {
+			state = GameState.EXPLORING;
+			map.cancelMove();
+			return new GameEvent.onFight.Run();
+		}
+		return fight();
 	}
 
-	public void fight() {
-		battle(map.getHeroCurrentPosition());
+	public GameEvent.onFight fight() {
+		state = GameState.FIGHTING;
+		return battle(map.getHeroCurrentPosition());
 	}
 
-	private void battle(Coordinates battlePosition) {
+	private GameEvent.onFight battle(Coordinates battlePosition) {
 		int villainStrenght = 1 + map.distanceFromCenter(battlePosition);
 		int villainExperienceDone = villainStrenght * 100;
-		boolean loot = Math.random() < villainStrenght / 10;
+		boolean loot = Math.random() < (villainStrenght % 11) / 10;
 
 		int strikeNumber = (villainStrenght / hero.getAttack()) + 1;
 
 		for(int i = 0; i < strikeNumber; i++) {
 			hero.doDamage((int)Math.round((Math.random() * villainStrenght) - hero.getDefense()));
 			if (hero.getHitpoints() <= 0) {
-				//TODO: notifier que le hero est mort
-				//TODO: arret de tout
+				state = GameState.IN_MENU;
+				return new GameEvent.onFight.Lose();
 			}
 		}
+		int oldLevel = hero.getLevel();
 		hero.addExperience(villainExperienceDone);
-		//TODO: notifier que le hero a gagné
+		boolean levelUp = oldLevel != hero.getLevel();
+
 		if (loot) {
-			//TODO: notifier que le hero peut equiper un truc (random du type?)
+			state = GameState.LOOTING;
+			String[] lootTypes = {"helmet", "weapon", "armor"};
+			String lootType = lootTypes[(int)(Math.random() * lootTypes.length)];
+			int lootBonus = (int)(Math.random() * 10) + villainStrenght;
+
+			pendingLoot = new Artifact(lootType, lootBonus);
+			return new GameEvent.onFight.Loot(lootType, lootBonus, levelUp);
 		}
+		state = GameState.EXPLORING;
+		return new GameEvent.onFight.Victory(levelUp);
 	}
 
-	public void equip(String artifactType) {
-		int artifactBonus = (int)(Math.random() * 10) + map.distanceFromCenter(map.getHeroCurrentPosition());
+	public void equip() {
+		if (pendingLoot != null)
+			hero.equip(pendingLoot);
+		clearLoot();
+	}
 
-		hero.equip(artifactType, artifactBonus);
-		//TODO: notifier que le hero a bien equipe un nouvel equipement
+	public void clearLoot() {
+		if (pendingLoot != null)
+			pendingLoot = null;
 	}
 
 }

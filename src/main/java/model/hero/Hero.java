@@ -40,21 +40,18 @@ public class Hero {
 		while (p_exp > ((level * 1000) + (Math.pow((level - 1), 2) * 450))) {
 			level++;
 		}
-		//TODO: Notify ?
 	}
 
-	public void equip(String artifactType, int bonus) {
-		Artifact newArtifact = new Artifact(artifactType, bonus);
-		String typeKey = artifactType.toLowerCase();
+	public void equip(Artifact artifact) {
+		String typeKey = artifact.type();
 
-		equipment.put(typeKey, newArtifact);
+		equipment.put(typeKey, artifact);
 
 		if (typeKey.equals("helmet")) {
 			int oldBonus = equipment.get("helmet").bonus();
-			int difference = bonus - oldBonus;
+			int difference = artifact.bonus() - oldBonus;
 
 			current_hitpoints += difference;
-
 
 			if (current_hitpoints > getMaxHitpoints()) {
 				current_hitpoints = getMaxHitpoints();
@@ -93,8 +90,8 @@ public class Hero {
 
 		current_hitpoints = heroClass.getHitpoints();
 		addExperience(heroData.exp());
-		equip("helmet", heroData.helmetBonus());
-		equip("armor", heroData.armorBonus());
-		equip("weapon", heroData.weaponBonus());
+		equip(new Artifact("helmet", heroData.helmetBonus()));
+		equip(new Artifact("armor", heroData.armorBonus()));
+		equip(new Artifact("weapon", heroData.weaponBonus()));
 	}
 }

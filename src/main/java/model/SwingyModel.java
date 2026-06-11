@@ -6,10 +6,6 @@ import model.hero.HeroData;
 public class SwingyModel {
 	private Game game;
 
-	public Game getGame() {
-		return game;
-	}
-
 	public void createGame(HeroData heroData) {
 		Hero hero = new Hero(heroData);
 
@@ -24,6 +20,10 @@ public class SwingyModel {
 		return new HeroData(name, "thief", 2350, 0, 0, 0);
 	}
 
+	public GameState getGameState() { return game.getState(); }
+
 	//commands
-	public GameEvent.onMove move(String direction) { return game.move(direction); }
+	public GameEvent.onMove		move(String direction) { return game.move(direction); }
+	public GameEvent.onFight	fight() { return game.fight(); }
+	public GameEvent.onFight	run() { return game.run(); }
 }
