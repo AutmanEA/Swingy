@@ -15,6 +15,10 @@ public class Game {
 		return state;
 	}
 
+	public Hero getHero() {
+		return hero;
+	}
+
 	public Game(Hero p_hero) {
 		hero = p_hero;
 
@@ -58,14 +62,17 @@ public class Game {
 	}
 
 	private GameEvent.onFight battle(Coordinates battlePosition) {
-		int villainStrenght = 1 + map.distanceFromCenter(battlePosition);
-		int villainExperienceDone = villainStrenght * 100;
-		boolean loot = Math.random() < (villainStrenght % 11) / 10;
+		int villainStrength = 1 + map.distanceFromCenter(battlePosition);
+		int villainExperienceDone = villainStrength * 100;
 
-		int strikeNumber = (villainStrenght / hero.getAttack()) + 1;
+		double maxDistance = map.getMaxDistance();
+		double lootChance = 0.30 + (villainStrength - 1) * (0.15 / maxDistance);
+		boolean loot = Math.random() < lootChance;
+
+		int strikeNumber = (villainStrength / hero.getAttack()) + 1;
 
 		for(int i = 0; i < strikeNumber; i++) {
-			hero.doDamage((int)Math.round((Math.random() * villainStrenght) - hero.getDefense()));
+			hero.doDamage((int)Math.round((Math.random() * villainStrength) - hero.getDefense()));
 			if (hero.getHitpoints() <= 0) {
 				state = GameState.IN_MENU;
 				return new GameEvent.onFight.Lose();
@@ -79,7 +86,7 @@ public class Game {
 			state = GameState.LOOTING;
 			String[] lootTypes = {"helmet", "weapon", "armor"};
 			String lootType = lootTypes[(int)(Math.random() * lootTypes.length)];
-			int lootBonus = (int)(Math.random() * 10) + villainStrenght;
+			int lootBonus = (int)(Math.random() * 10) + villainStrength;
 
 			pendingLoot = new Artifact(lootType, lootBonus);
 			return new GameEvent.onFight.Loot(lootType, lootBonus, levelUp);

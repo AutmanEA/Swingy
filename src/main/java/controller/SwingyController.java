@@ -144,15 +144,15 @@ public class SwingyController implements InputEvent {
 		view.display("debut de la bagar");
 		switch (fightResult) {
 			case GameEvent.onFight.Loot(String artifactType, int artifactBonus, boolean levelUp) -> {
-				if (levelUp) view.display("t'as level up !");
+				if (levelUp) view.display("t'as level up ! tu es desormais leveel" + model.getHeroLevel());
 				view.display("tu loot ca : " + artifactType + " qui a cette puissance : " + artifactBonus + " tu veux quiper?");
 			}
 			case GameEvent.onFight.Victory(boolean levelUp) -> {
-				if (levelUp) view.display("t'as level up !");
+				if (levelUp) view.display("t'as level up ! tu es desormais leveel" + model.getHeroLevel());
 				view.display("bravo t'as gagne le fight");
 			}
-			case GameEvent.onFight.Lose() -> view.display("t'as perdu retour au menu");
-			case GameEvent.onFight.Run()  -> view.display("t'as reussi a run, continue a explorer");
+			case GameEvent.onFight.Lose()	-> view.display("t'as perdu retour au menu");
+			case GameEvent.onFight.Run()	-> view.display("t'as reussi a run, continue a explorer");
 		}
 	}
 }

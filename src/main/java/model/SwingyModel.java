@@ -21,6 +21,7 @@ public class SwingyModel {
 	}
 
 	public GameState getGameState() { return game.getState(); }
+	public int getHeroLevel() { return game.getHero().getLevel(); }
 
 	//commands
 	public GameEvent.onMove		move(String direction) { return game.move(direction); }
