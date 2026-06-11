@@ -23,4 +23,7 @@ public class SwingyModel {
 
 		return new HeroData(name, "thief", 2350, 0, 0, 0);
 	}
+
+	//commands
+	public GameEvent.onMove move(String direction) { return game.move(direction); }
 }

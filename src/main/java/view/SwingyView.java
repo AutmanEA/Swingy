@@ -27,26 +27,6 @@ public class SwingyView {
 		currentView.startListen();
 	}
 
-	public void unknownCommand() {
-		display("UNKNOWN COMMAND: (command \"help\" to get command list)");
-	}
-
-	public void move(String direction) {
-		display("Hero moved " + direction);
-	}
-
-	public void moveError() {
-		display("Command failed, use move with one argument -> north (n), south (s), east (e) or west (w)");
-	}
-
-	public void badCommandUsage() {
-		display("This command can't be used now (command \"help\" to get command list)");
-	}
-
-	public void display(String message) {
-		currentView.displayMessage(message);
-	}
-
 	public void switchView() {
 		if (currentView == guiView) {
 			currentView = consoleView;
@@ -55,4 +35,14 @@ public class SwingyView {
 		}
 		currentView.startListen();
 	}
+
+	// -- INSTRUCTIONS -- //
+	//generic
+	public void display(String message) { currentView.displayMessage(message); }
+	public void unknownCommand(String command) { currentView.unknownCommand(command); }
+	public void badArgument() { currentView.badArgument(); }
+	public void badCommandUsage() { currentView.badCommandUsage(); }
+
+	//commands
+	public void move(String direction) { currentView.handleMove(direction); }
 }

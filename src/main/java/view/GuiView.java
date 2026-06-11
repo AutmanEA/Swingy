@@ -7,6 +7,7 @@ import controller.InputEvent;
 public class GuiView implements GameView {
 	private InputEvent listener;
 
+	@Override
 	public void displayMessage(String message) {
 		System.out.println("> " + message);
 	}
@@ -25,5 +26,25 @@ public class GuiView implements GameView {
 					listener.onInput(input);
 			}
 		}
+	}
+
+	@Override
+	public void unknownCommand(String command) {
+		displayMessage("UNKNOWN COMMAND: " + command + " (command \"help\" to get command list)");
+	}
+
+	@Override
+	public void badArgument() {
+		displayMessage("MISSING ARGUMENT: this command needs arguments (command \"help\" to get command list)");
+	}
+
+	@Override
+	public void badCommandUsage() {
+		displayMessage("This command can't be used now (command \"help\" to get command list)");
+	}
+
+	@Override
+	public void handleMove(String direction) {
+		displayMessage("Hero moved " + direction);
 	}
 }

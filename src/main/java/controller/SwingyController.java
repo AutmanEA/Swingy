@@ -26,45 +26,13 @@ public class SwingyController implements InputEvent {
 	}
 
 	public void exec() throws Exception {
-		// boolean isRunning = true;
-
 		model.createGame(model.loadHero("Joey")); //TODO:delete
 		view.startListen();
-
-
-		// while (isRunning) {
-		// 	String input = waitInput(view.getPrompt());
-
-		// 	if (input.length() == 0) {
-		// 		return;
-		// 	}
-
-		// 	String command = getCommand(input);
-		// 	String argument = getArgument(input);
-
-		// 	if (command != null)
-		// 		processCommand(command, argument);
-		// }
 	}
-
-
-	// private String waitInput(String prompt) {
-	// 	Scanner scanner = new Scanner(System.in); //TODO: attention je vais sans doute pas que ecouter ca
-	// 	String userInput = "";
-
-	// 	view.display(prompt);
-	// 	if (scanner.hasNextLine()) {
-	// 		userInput = scanner.nextLine().toLowerCase().trim();
-	// 	}
-	// 	scanner.close();
-	// 	return userInput;
-	// }
 
 	private String getCommand(String data) {
 		String[] split = data.split("\\s+");
 
-		if (data.isEmpty() || data.isBlank())
-			return null;
 		return split[0];
 	}
 
@@ -79,7 +47,12 @@ public class SwingyController implements InputEvent {
 
 	private void processCommand(String command, String argument) {
 		switch (command) {
-			case "move"					-> handleMove(argument);
+			case "move":
+				if (argument != null)
+					handleMove(argument);
+				else
+					view.badArgument();
+				break;
 			// case "fight"				-> ;
 			// case "run"					-> ;
 			// case "equip"				-> ;
@@ -89,7 +62,8 @@ public class SwingyController implements InputEvent {
 			// case "load"					-> ;
 			// case "export"				-> ;
 			// case "import"				-> ;
-			default						-> view.unknownCommand();
+			default:
+				view.unknownCommand(command);
 		}
 	}
 
@@ -99,22 +73,22 @@ public class SwingyController implements InputEvent {
 		switch (direction) {
 			case "n", "north":
 				view.move("north");
-				result = model.getGame().move("n");
+				result = model.move("n");
 				break;
 			case "s", "south":
 				view.move("south");
-				result = model.getGame().move("s");
+				result = model.move("s");
 				break;
 			case "w", "west":
 				view.move("west");
-				result = model.getGame().move("w");
+				result = model.move("w");
 				break;
 			case "e", "east":
 				view.move("east");
-				result = model.getGame().move("e");
+				result = model.move("e");
 				break;
 			default:
-				view.moveError();
+				view.badArgument();
 				return;
 		}
 		switch (result) {

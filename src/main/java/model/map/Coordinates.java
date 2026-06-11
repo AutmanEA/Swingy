@@ -31,4 +31,10 @@ public class Coordinates {
 		x = target.x;
 		y = target.y;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Coordinates c)) return false;
+		return this.x == c.x && this.y == c.y;
+	}
 }

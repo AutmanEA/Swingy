@@ -22,9 +22,29 @@ public class ConsoleView implements GameView {
 		try (Scanner scanner = new Scanner(System.in)) {
 			while (scanner.hasNextLine()) {
 				String input = scanner.nextLine().toLowerCase().trim();
-				if (!input.isEmpty())
-					listener.onInput(input);
+
+				listener.onInput(input);
 			}
 		}
+	}
+
+	@Override
+	public void unknownCommand(String command) {
+		displayMessage("UNKNOWN COMMAND: " + command + " (command \"help\" to get command list)");
+	}
+
+	@Override
+	public void badArgument() {
+		displayMessage("BAD ARGUMENT: this command needs specific arguments (command \"help\" to get command list)");
+	}
+
+	@Override
+	public void badCommandUsage() {
+		displayMessage("BAD USAGE: this command can't be used now (command \"help\" to get command list)");
+	}
+
+	@Override
+	public void handleMove(String direction) {
+		displayMessage("Hero moved " + direction);
 	}
 }
